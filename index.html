@@ -5,7 +5,8 @@
     <title>Wire Certificate Check</title>
     <script>
       const {ipcRenderer, shell} = require('electron');
-      let log = `Wire Certificate Check log from ${new Date().toISOString()}\n\n`;
+      const os = require('os');
+      let log = `--- Wire Certificate Check log from ${new Date().toISOString()} on ${os.platform()} ${os.arch()} ---\n\n`;
 
       window.$ = window.jQuery = require('jquery');
       $(() => {
@@ -16,7 +17,7 @@
 
         ipcRenderer.on('result', (event, data) => {
           const {hostname, result} = data;
-          const {errorMessage = '', verifiedPublicKeyInfo} = result;
+          const {errorMessage = '', verifiedPublicKeyInfo, certificate: { data: certData = {}} = {}} = result;
           let icon;
           if (verifiedPublicKeyInfo === true) {
             icon = '✔️';
@@ -24,7 +25,8 @@
             icon = '❌';
             $('#status').html('At least one check failed.');
             $('#sendmail').show();
-            log += `${hostname}: ${errorMessage}\n`;
+            log += `*${hostname}*: ${errorMessage}\n`;
+            log += `\nRemote certificate:\n${certData}\n\n------------------------------------------------------------------\n\n`;
           }
           $(`#host-${hostname.replace(/\./g, '-')} .status`).html(icon);
         });
