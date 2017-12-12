@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Wire Certificate Check</title>
     <script>
-      const {ipcRenderer} = require('electron');
+      const {ipcRenderer, shell} = require('electron');
+      let log = `Wire Certificate Check log from ${new Date().toISOString()}\n\n`;
 
       window.$ = window.jQuery = require('jquery');
       $(() => {
@@ -21,12 +22,18 @@
             icon = '✔️';
           } else {
             icon = '❌';
-            $('#log').append(`${hostname}: ${errorMessage}<br>`);
+            $('#status').html('At least one check failed.');
+            $('#sendmail').show();
+            log += `${hostname}: ${errorMessage}\n`;
           }
           $(`#host-${hostname.replace(/\./g, '-')} .status`).html(icon);
         });
 
         $(document).on('click', '#start', () => ipcRenderer.send('start-verification'));
+        $(document).on('click', '#sendmail', event => {
+          event.preventDefault();
+          shell.openExternal(`mailto:support@wire.com?subject=${encodeURIComponent('Certificate Check Report')}&body=${encodeURIComponent(log)}`);
+        });
 
         ipcRenderer.send('jquery-ready');
       });
@@ -36,8 +43,8 @@
         font-family: Arial, sans-serif;
       }
 
-      #log {
-        background-color: #ddd;
+      #sendmail {
+        display: none;
       }
     </style>
   </head>
@@ -48,7 +55,6 @@
     <br>
     <button id="start">Start certificate checks</button><br>
     <br>
-    <code id="log">
-    </code>
+    <span id="status"></span> <button id="sendmail">Send log via email</button>
   </body>
 </html>

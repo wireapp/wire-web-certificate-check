@@ -35,7 +35,6 @@ const verifyHosts = hostnames => {
   return Promise.all(certPromises)
     .then(objects => objects.forEach(({hostname, certData}) => {
       const result = certutils.verifyPinning(hostname, certData);
-      console.log(hostname, result)
       mainWindow.webContents.send('result', {hostname, result});
     }));
 }
