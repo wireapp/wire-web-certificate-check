@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Wire Certificate Check</title>
+    <script>
+      const {ipcRenderer} = require('electron');
+
+      window.$ = window.jQuery = require('jquery');
+      $(() => {
+        ipcRenderer.on('hostnames', (event, hostnames) => hostnames.forEach(hostname => {
+          $('#hostnames').append($(`<div id="host-${hostname.replace(/\./g, '-')}"></div>`)
+            .append($(`<span>${hostname}</span><span class="status"></span>`)))
+        }));
+
+        ipcRenderer.on('result', (event, data) => {
+          const {hostname, result} = data;
+          const {errorMessage = '', verifiedPublicKeyInfo} = result;
+          let icon;
+          if (verifiedPublicKeyInfo === true) {
+            icon = '✔️';
+          } else {
+            icon = '❌';
+            $('#log').append(`${hostname}: ${errorMessage}<br>`);
+          }
+          $(`#host-${hostname.replace(/\./g, '-')} .status`).html(icon);
+        });
+
+        $(document).on('click', '#start', () => ipcRenderer.send('start-verification'));
+
+        ipcRenderer.send('jquery-ready');
+      });
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      #log {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Wire Certificate Check</h1>
+    <h2>These domains will be tested:</h2>
+    <div id="hostnames"></div>
+    <br>
+    <button id="start">Start certificate checks</button><br>
+    <br>
+    <code id="log">
+    </code>
+  </body>
+</html>
