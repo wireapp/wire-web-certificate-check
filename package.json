@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "electron": "1.7.9",
-    "electron-builder": "^19.49.0"
+    "electron-builder": "19.49.0"
   },
   "email": "webapp@wire.com",
   "files": [
@@ -36,5 +36,5 @@
     "pack": "electron-builder --dir",
     "start": "electron ."
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
