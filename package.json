@@ -1,18 +1,39 @@
 {
-  "author": "Wire",
+  "author": "Wire <webapp@wire.com>",
+  "build": {
+    "appId": "com.wire.certificatecheck",
+    "mac": {
+      "category": "Network"
+    },
+    "linux": {
+      "category": "Network"
+    }
+  },
   "description": "Wire Certificate check",
   "dependencies": {
     "jquery": "3.2.1",
     "jsrsasign": "8.0.4"
   },
   "devDependencies": {
-    "electron": "1.7.9"
+    "electron": "1.7.9",
+    "electron-builder": "^19.49.0"
   },
-  "license": "CC0-1.0",
+  "email": "webapp@wire.com",
+  "files": [
+    "certutils.js",
+    "index.html",
+    "main.js"
+  ],
+  "license": "GPL-3.0",
   "main": "main.js",
-  "name": "electron-quick-start",
+  "name": "wire-web-certificatecheck",
   "repository": "https://github.com/wireapp/wire-web-certificatecheck",
   "scripts": {
+    "dist:linux": "electron-builder --linux deb --x64",
+    "dist:macos": "electron-builder --mac --ix64",
+    "dist:windows": "electron-builder --win --ia32",
+    "dist": "yarn dist:linux && yarn dist:windows && yarn dist:macos",
+    "pack": "electron-builder --dir",
     "start": "electron ."
   },
   "version": "0.1.0"
