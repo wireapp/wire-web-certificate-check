@@ -45,8 +45,6 @@ const createWindow = () => {
     height: 600
   });
 
-  mainWindow.webContents.openDevTools();
-
   mainWindow.on('closed', () => mainWindow = null);
 
   mainWindow.loadURL(url.format({
@@ -63,9 +61,11 @@ const createWindow = () => {
       'prod-nginz-ssl.wire.com',
       'wire.com',
     ];
-    ipcMain.on('jquery-ready', () => mainWindow.webContents.send('hostnames', hostnames));
-    ipcMain.on('start-verification', () => verifyHosts(hostnames));
     mainWindow.show();
+    ipcMain.on('jquery-ready', () => {
+      mainWindow.webContents.send('hostnames', hostnames)
+      verifyHosts(hostnames);
+    });
   });
 };
 
