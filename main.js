@@ -56,7 +56,7 @@ const verifyHosts = hostnames => {
       const result = certutils.verifyPinning(hostname, certData);
       mainWindow.webContents.send('result', {hostname, result});
     }));
-}
+};
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -82,7 +82,7 @@ const createWindow = () => {
     ];
     mainWindow.show();
     ipcMain.on('jquery-ready', () => {
-      mainWindow.webContents.send('hostnames', hostnames)
+      mainWindow.webContents.send('hostnames', hostnames);
       verifyHosts(hostnames);
     });
   });
