@@ -26,7 +26,7 @@
             $('#status').html('<p>At least one check failed.</p>');
             $('#sendmail').show();
             log += `*${hostname}*: ${errorMessage}\n`;
-            log += `\nRemote certificate:\n${certData}\n\n------------------------------------------------------------------\n\n`;
+            log += `\nRemote certificate:\n${JSON.stringify(result)}\n\n------------------------------------------------------------------\n\n`;
           }
           $(`#host-${hostname.replace(/\./g, '-')} .status`).html(icon);
         });

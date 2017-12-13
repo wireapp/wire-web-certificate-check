@@ -69,8 +69,8 @@ module.exports = {
       publicKey = rs.X509.getPublicKeyInfoPropOfCertPEM(certData);
       publicKeyBytes = Buffer.from(publicKey.keyhex, 'hex').toString('binary');
       publicKeyFingerprint = crypto.createHash('sha256').update(publicKeyBytes).digest('base64');
-    } catch (err) {
-      console.error('verifyPinning', err);
+    } catch (error) {
+      console.error('verifyPinning', error);
       return {decoding: false};
     }
 
