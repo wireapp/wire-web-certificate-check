@@ -1,4 +1,5 @@
 {
+  "author": "Wire <webapp@wire.com>",
   "build": {
     "appId": "com.wire.certificatecheck",
     "mac": {
