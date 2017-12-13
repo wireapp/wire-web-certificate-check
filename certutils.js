@@ -56,10 +56,6 @@ const pins = [
 ];
 
 module.exports = {
-  hostnameShouldBePinned(hostname) {
-    return pins.some(pin => pin.url.test(hostname.toLowerCase().trim()));
-  },
-
   verifyPinning(hostname, certificate) {
     const {data: certData = '', issuerCert: {data: issuerCertData = ''} = {}} = certificate;
     let issuerCertHex, publicKey, publicKeyBytes, publicKeyFingerprint;
@@ -81,44 +77,42 @@ module.exports = {
     for (const pin of pins) {
       const {url, publicKeyInfo = [], issuerRootPubkeys = []} = pin;
 
-      if (url.test(hostname.toLowerCase().trim())) {
-        if (issuerRootPubkeys.length > 0) {
-          result.verifiedIssuerRootPubkeys = issuerRootPubkeys.some(pubkey => rs.X509.verifySignature(issuerCertHex, rs.KEYUTIL.getKey(pubkey)));
-          if (!result.verifiedIssuerRootPubkeys) {
-            errorMessages.push(`Issuer root public key signatures: none of "${issuerRootPubkeys.join(', ')}" could be verified.`);
-          }
+      if (issuerRootPubkeys.length > 0) {
+        result.verifiedIssuerRootPubkeys = issuerRootPubkeys.some(pubkey => rs.X509.verifySignature(issuerCertHex, rs.KEYUTIL.getKey(pubkey)));
+        if (!result.verifiedIssuerRootPubkeys) {
+          errorMessages.push(`Issuer root public key signatures: none of "${issuerRootPubkeys.join(', ')}" could be verified.`);
+        }
+      }
+
+      result.verifiedPublicKeyInfo = publicKeyInfo.reduce((arr, pubkey) => {
+        const {fingerprints: knownFingerprints = [], algorithmID: knownAlgorithmID = '', algorithmParam: knownAlgorithmParam = null} = pubkey;
+
+        const fingerprintCheck = (knownFingerprints.length > 0) ? knownFingerprints.some(knownFingerprint => knownFingerprint === publicKeyFingerprint) : undefined;
+        const algorithmIDCheck = knownAlgorithmID === publicKey.algoid;
+        const algorithmParamCheck = knownAlgorithmParam === publicKey.algparam;
+
+        if (!fingerprintCheck) {
+          errorMessages.push(`Public key fingerprints: "${publicKeyFingerprint}" could not be verified with any of the known fingerprints "${knownFingerprints.join(', ')}".`);
         }
 
-        result.verifiedPublicKeyInfo = publicKeyInfo.reduce((arr, pubkey) => {
-          const {fingerprints: knownFingerprints = [], algorithmID: knownAlgorithmID = '', algorithmParam: knownAlgorithmParam = null} = pubkey;
+        if (!algorithmIDCheck) {
+          errorMessages.push(`Algorithm ID: "${publicKey.algoid}" could not be verified with the known ID "${knownAlgorithmID}".`);
+        }
 
-          const fingerprintCheck = (knownFingerprints.length > 0) ? knownFingerprints.some(knownFingerprint => knownFingerprint === publicKeyFingerprint) : undefined;
-          const algorithmIDCheck = knownAlgorithmID === publicKey.algoid;
-          const algorithmParamCheck = knownAlgorithmParam === publicKey.algparam;
+        if (!algorithmParamCheck) {
+          errorMessages.push(`Algorithm parameter: "${publicKey.algparam}" could not be verified with the known parameter "${knownAlgorithmParam}".`);
+        }
 
-          if (!fingerprintCheck) {
-            errorMessages.push(`Public key fingerprints: "${publicKeyFingerprint}" could not be verified with any of the known fingerprints "${knownFingerprints.join(', ')}".`);
-          }
+        arr.push(
+          fingerprintCheck,
+          algorithmIDCheck,
+          algorithmParamCheck
+        );
 
-          if (!algorithmIDCheck) {
-            errorMessages.push(`Algorithm ID: "${publicKey.algoid}" could not be verified with the known ID "${knownAlgorithmID}".`);
-          }
+        return arr;
+      }, []).every(value => Boolean(value));
 
-          if (!algorithmParamCheck) {
-            errorMessages.push(`Algorithm parameter: "${publicKey.algparam}" could not be verified with the known parameter "${knownAlgorithmParam}".`);
-          }
-
-          arr.push(
-            fingerprintCheck,
-            algorithmIDCheck,
-            algorithmParamCheck
-          );
-
-          return arr;
-        }, []).every(value => Boolean(value));
-
-        break;
-      }
+      break;
     }
 
     if (errorMessages.length > 0) {

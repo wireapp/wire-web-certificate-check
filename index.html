@@ -34,7 +34,7 @@
         $(document).on('click', '#start', () => ipcRenderer.send('start-verification'));
         $(document).on('click', '#sendmail', event => {
           event.preventDefault();
-          shell.openExternal(`mailto:support@wire.com?subject=${encodeURIComponent('Certificate Check Report')}&body=${encodeURIComponent(log)}`);
+          shell.openExternal(`mailto:support+web@wire.com?subject=${encodeURIComponent('Certificate Check Report')}&body=${encodeURIComponent(log)}`);
         });
 
         ipcRenderer.send('jquery-ready');
