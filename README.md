@@ -1,4 +1,4 @@
-# Wire Certificate check
+# Wire Certificate Pinning Debugger
 
 ```bash
 yarn
