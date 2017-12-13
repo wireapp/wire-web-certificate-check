@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Wire Certificate Check</title>
+    <title>Wire Certificate Pinning Debugger</title>
     <script>
       const {ipcRenderer, shell} = require('electron');
       const os = require('os');
@@ -12,7 +12,7 @@
       $(() => {
         ipcRenderer.on('hostnames', (event, hostnames) => hostnames.forEach(hostname => {
           $('#hostnames').append($(`<div id="host-${hostname.replace(/\./g, '-')}"></div>`)
-            .append($(`<span>${hostname}</span><span class="status"></span>`)))
+            .append($(`<span class="status"></span> <span>${hostname}</span>`)))
         }));
 
         ipcRenderer.on('result', (event, data) => {
@@ -23,7 +23,7 @@
             icon = '✔️';
           } else {
             icon = '❌';
-            $('#status').html('At least one check failed.');
+            $('#status').html('<p>At least one check failed.</p>');
             $('#sendmail').show();
             log += `*${hostname}*: ${errorMessage}\n`;
             log += `\nRemote certificate:\n${certData}\n\n------------------------------------------------------------------\n\n`;
@@ -54,7 +54,6 @@
     <h1>Wire Certificate Check</h1>
     <h2>Testing domains:</h2>
     <div id="hostnames"></div>
-    <br>
     <span id="status"></span> <button id="sendmail">Send log via email</button>
   </body>
 </html>

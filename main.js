@@ -75,6 +75,7 @@ const createWindow = () => {
   mainWindow.webContents.on('dom-ready', () => {
     const hostnames = [
       'app.wire.com',
+      'new-cert-test.wire.com',
       'prod-assets.wire.com',
       'prod-nginz-https.wire.com',
       'prod-nginz-ssl.wire.com',
