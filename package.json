@@ -29,7 +29,7 @@
   "repository": "https://github.com/wireapp/wire-web-certificate-check",
   "scripts": {
     "dist:linux": "electron-builder --linux deb --x64",
-    "dist:macos": "electron-builder --mac --ix64",
+    "dist:macos": "electron-builder --mac --x64",
     "dist:windows": "electron-builder --win --ia32",
     "pack": "electron-builder --dir",
     "start": "electron ."
