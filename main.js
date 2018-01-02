@@ -43,7 +43,11 @@ const connect = hostname => {
           },
         };
         resolve({certData, hostname});
-      });
+      })
+    })
+    .on('error', err => {
+      console.error(err);
+      resolve({hostname, certData: {}});
     });
   });
 };
@@ -52,7 +56,7 @@ const verifyHosts = hostnames => {
   const certPromises = hostnames.map(hostname => connect(hostname));
 
   return Promise.all(certPromises)
-    .then(objects => objects.forEach(({hostname, certData}) => {
+    .then(objects => objects.forEach(({certData, hostname}) => {
       const result = certutils.verifyPinning(hostname, certData);
       mainWindow.webContents.send('result', {hostname, result});
     }));
@@ -75,7 +79,6 @@ const createWindow = () => {
   mainWindow.webContents.on('dom-ready', () => {
     const hostnames = [
       'app.wire.com',
-      'new-cert-test.wire.com',
       'prod-assets.wire.com',
       'prod-nginz-https.wire.com',
       'prod-nginz-ssl.wire.com',
