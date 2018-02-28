@@ -12,7 +12,8 @@
   "description": "Wire Certificate Pinning Debugger",
   "dependencies": {
     "jquery": "3.2.1",
-    "jsrsasign": "8.0.4"
+    "jsrsasign": "8.0.6",
+    "yargs": "11.0.0"
   },
   "devDependencies": {
     "electron": "1.7.9",
