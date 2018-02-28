@@ -32,7 +32,7 @@ function getFingerprint(derCert) {
 (async () => {
   const derCert = await getDERFormattedCertificate(argv.url);
   const publicKeyFingerprint = await getFingerprint(derCert);
-  console.log(`Certificate fingerprint for "${argv.url}": "${publicKeyFingerprint}"`);
+  console.log(`Public certificate fingerprint for "${argv.url}": "${publicKeyFingerprint}"`);
 })();
 
 
