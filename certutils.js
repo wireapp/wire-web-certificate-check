@@ -45,7 +45,7 @@ const pins = [
     publicKeyInfo: [{
       algorithmID: CERT_ALGORITHM_RSA,
       algorithmParam: null,
-      fingerprints: [MULTIDOMAIN_CERT_FINGERPRINT, WILDCARD_CERT_FINGERPRINT],
+      fingerprints: [WILDCARD_CERT_FINGERPRINT],
     }],
     url: /^prod-(assets|nginz-https|nginz-ssl)\.wire\.com$/i,
   },
