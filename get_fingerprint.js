@@ -29,12 +29,8 @@ function getFingerprint(derCert) {
   return crypto.createHash('sha256').update(publicKeyBytes).digest('base64');
 }
 
-(async () => {
-  const derCert = await getDERFormattedCertificate(argv.url);
-  const publicKeyFingerprint = await getFingerprint(derCert);
-  console.log(`Public certificate fingerprint for "${argv.url}": "${publicKeyFingerprint}"`);
-})();
-
-
-
-
+getDERFormattedCertificate(argv.url)
+  .then(derCert => getFingerprint(derCert))
+  .then(publicKeyFingerprint =>
+    console.log(`Public certificate fingerprint for "${argv.url}": "${publicKeyFingerprint}"`)
+  );
