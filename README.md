@@ -1,15 +1,18 @@
 # Wire Certificate Pinning Debugger
 
-```bash
-yarn
-yarn start
-```
+### Download the latest version from the [release page](https://github.com/wireapp/wire-web-certificate-check/releases).
 
 ## Screenshot
 
 ![Screenshot](https://user-images.githubusercontent.com/469989/33942557-a051d1c0-e016-11e7-814d-d554526c5dfb.PNG)
 
-## Terminal usage
+## Node.js usage
+```bash
+yarn
+yarn start
+```
+
+## Additional terminal usage
 
 There is a command-line interface to output the certificate fingerprint. It works like this:
 
