@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "electron": "1.8.2",
-    "electron-builder": "19.49.0"
+    "electron-builder": "20.24.5"
   },
   "files": [
     "certutils.js",
