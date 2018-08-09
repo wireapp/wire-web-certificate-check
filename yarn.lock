@@ -505,9 +505,9 @@ electron-publish@20.27.0:
     lazy-val "^1.0.3"
     mime "^2.3.1"
 
-electron@2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-2.0.6.tgz#8e5c1bd2ebc08fa7a6ee906de3753c1ece9d7300"
+electron@2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-2.0.7.tgz#f7ce410433298e319032ce31f0e6ffd709ff052c"
   dependencies:
     "@types/node" "^8.0.24"
     electron-download "^3.0.1"
