@@ -16,7 +16,7 @@
     "yargs": "12.0.1"
   },
   "devDependencies": {
-    "electron": "2.0.7",
+    "electron": "2.0.8",
     "electron-builder": "20.27.1"
   },
   "files": [
