@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "electron": "3.0.7",
-    "electron-builder": "20.29.0"
+    "electron-builder": "20.31.2"
   },
   "files": [
     "index.html",
